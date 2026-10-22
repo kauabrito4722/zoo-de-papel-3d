@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zoo de Papel 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<!--
+  PÁGINA DE VENDAS MODELADA: "Zoo de Papel 3D"
+  ANTES DE PUBLICAR NO AR:
+  1) Se tiver fotos reais dos moldes montados, coloque junto (fotos reais vendem mais).
+  3) Troque href="#checkout" pelo link do seu checkout (Kiwify, Hotmart, Cakto etc.).
+  4) Confira preços e quantidades com o que o seu produto entrega de verdade.
+-->
+<style>
+html,body{margin:0;padding:0}
+/* Layout: faixas coloridas de ponta a ponta, coluna central de 1080px; bichos de papel 3D (caixinhas dobradas) como imagem do produto. Tema único, cores fixas. */
+:root{
+  --selva:#17643F;
+  --selva-esc:#0E4A2D;
+  --sol:#FFC531;
+  --coral:#FF6B4A;
+  --coral-esc:#D94A2B;
+  --kraft:#F6E7C8;
+  --papel:#FFFDF7;
+  --tinta:#1D2A22;
+  --tinta-suave:#4A5A50;
+  --ok:#1E9E57;
+  --risco:#C9302C;
+  --linha:#E4D6B6;
+  --f-display:"Baloo 2","Trebuchet MS",system-ui,sans-serif;
+  --f-corpo:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--papel);color:var(--tinta);font-family:var(--f-corpo);font-size:17px;line-height:1.55;overflow-x:hidden}
+h1,h2,h3{font-family:var(--f-display);line-height:1.08;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:inherit}
+.faixa{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.miolo{max-width:1080px;margin:0 auto}
+.estreito{max-width:720px;margin:0 auto}
+.centro{text-align:center}
+
+/* ===== Motor 3D dos bichos de papel ===== */
+.palco{position:relative;width:100%;aspect-ratio:1;perspective:900px;perspective-origin:50% 25%;touch-action:pan-y;cursor:grab;user-select:none}
+.palco:active{cursor:grabbing}
+.cena{position:absolute;left:50%;top:56%;transform-style:preserve-3d;transform:scale(var(--s,1)) rotateX(-17deg)}
+.gira{transform-style:preserve-3d;transform:rotateY(var(--ry,-28deg))}
+@media (prefers-reduced-motion:no-preference){
+  .gira{animation:balanca 6s ease-in-out infinite alternate;animation-delay:var(--atraso,0s)}
+  .palco.manual .gira{animation:none}
+}
+@keyframes balanca{from{transform:rotateY(-48deg)}to{transform:rotateY(38deg)}}
+.bx{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.fc{position:absolute;border:1.2px solid rgba(0,0,0,.2);background-size:22px 22px}
+.fc.r,.fc.l{box-shadow:inset 0 0 0 300px rgba(0,0,0,.13)}
+.fc.k{box-shadow:inset 0 0 0 300px rgba(0,0,0,.2)}
+.fc.t{box-shadow:inset 0 0 0 300px rgba(255,255,255,.14)}
+.fc.b{box-shadow:inset 0 0 0 300px rgba(0,0,0,.3)}
+.sombra{position:absolute;left:-80px;top:-80px;width:160px;height:160px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.28),rgba(0,0,0,0))}
+/* rostos */
+.olho{position:absolute;width:13%;aspect-ratio:1;border-radius:50%;background:#1b1b1b;top:var(--oy,36%)}
+.olho::after{content:"";position:absolute;width:38%;height:38%;border-radius:50%;background:#fff;left:18%;top:16%}
+.olho.e{left:22%}.olho.d{right:22%}
+.boch{position:absolute;width:14%;height:9%;border-radius:50%;background:rgba(255,110,110,.45);top:62%}
+.boch.e{left:10%}.boch.d{right:10%}
+.boca{position:absolute;left:38%;width:24%;height:12%;top:60%;border-bottom:3px solid #1b1b1b;border-radius:0 0 50% 50%}
+.mancha{position:absolute;width:24%;height:30%;background:#1b1b1b;border-radius:50% 50% 45% 45%;top:28%;transform:rotate(var(--rt))}
+.mancha.e{left:15%;--rt:-18deg}.mancha.d{right:15%;--rt:18deg}
+.nariz{position:absolute;left:34%;width:32%;height:30%;top:16%;background:#1b1b1b;border-radius:40% 40% 60% 60%}
+.narina{position:absolute;width:16%;height:30%;background:#B4566A;border-radius:50%;top:35%}
+.narina.e{left:26%}.narina.d{right:26%}
+.olhao{position:absolute;inset:14%;border-radius:50%;background:#fff;display:grid;place-items:center}
+.olhao::after{content:"";width:46%;height:46%;border-radius:50%;background:#1b1b1b}
+.mascara{position:absolute;left:10%;right:10%;top:22%;bottom:6%;background:#fff;border-radius:46% 46% 40% 40%}
+.barriga{position:absolute;left:16%;right:16%;top:10%;bottom:0;background:var(--bc,#fff);border-radius:45% 45% 0 0}
+.dentes{position:absolute;left:20%;right:20%;top:72%;height:12%;background:repeating-linear-gradient(90deg,#fff 0 8px,transparent 8px 12px)}
+
+/* Barra do topo */
+.topo{background:var(--sol);color:var(--selva-esc);font-weight:800;font-size:14px;padding-block:9px;text-align:center}
+
+/* HERO */
+.hero{background:var(--selva);color:#fff;padding-block:36px 40px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:
+  radial-gradient(circle at 12% 18%,rgba(255,197,49,.16) 0 120px,transparent 121px),
+  radial-gradient(circle at 92% 70%,rgba(255,107,74,.14) 0 160px,transparent 161px);pointer-events:none}
+.hero .miolo{position:relative;display:grid;gap:22px;justify-items:center;text-align:center}
+.selo-marca{font-family:var(--f-display);font-weight:800;letter-spacing:.06em;font-size:15px;text-transform:uppercase;border:2px dashed rgba(255,255,255,.55);border-radius:999px;padding:4px 16px}
+.hero h1{font-size:clamp(30px,5.4vw,54px);font-weight:800;text-transform:uppercase;max-width:960px}
+.hero h1 em{font-style:normal;color:var(--sol)}
+.hero .sub{font-family:var(--f-display);font-weight:700;color:var(--sol);font-size:clamp(20px,3vw,28px)}
+
+.vitrine{position:relative;width:min(640px,100%);display:grid;justify-items:center;gap:6px}
+.titulo-produto{position:relative;z-index:5;transform:rotate(-2deg);background:var(--sol);color:var(--selva-esc);font-family:var(--f-display);font-weight:800;font-size:clamp(22px,4.4vw,38px);line-height:1;padding:10px 22px 6px;border-radius:14px;box-shadow:0 6px 0 var(--coral-esc);white-space:nowrap}
+.titulo-produto b{color:var(--coral-esc)}
+.mesa{position:relative;width:100%;display:grid;grid-template-columns:1fr 1.5fr 1fr;align-items:end;background:radial-gradient(ellipse 60% 26% at 50% 86%,rgba(255,255,255,.14),transparent 70%)}
+.mesa .lado{margin-bottom:6%}
+.folha-molde{position:absolute;left:0;top:-14%;width:27%;transform:rotate(-10deg);background:var(--papel);border-radius:6px;padding:6px;box-shadow:0 12px 24px rgba(0,0,0,.28);z-index:0}
+.folha-molde small{display:block;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-suave);text-align:center}
+.mesa .palco{z-index:1}
+.dica{font-size:14px;font-weight:700;opacity:.85}
+.bicho3d{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 14px rgba(0,0,0,.18))}
+.mesa .lado .bicho3d{width:88%;margin-inline:auto}
+.folha-molde img{display:block;width:100%;height:auto;border-radius:3px}
+.passo .folha{width:86%;background:#fff;border-radius:6px;padding:6px;box-shadow:0 8px 18px rgba(80,60,20,.18);transform:rotate(-3deg)}
+.passo .folha img,.passo .recorte img{display:block;width:100%;height:auto}
+.passo .recorte{position:relative;width:84%}
+.passo .recorte .tesoura{position:absolute;right:-8%;top:-6%;font-size:clamp(30px,5vw,44px)}
+.passo .recorte small{display:block;margin-top:4px;font-size:13px;font-weight:800;color:#4A5A50}
+
+
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;font-weight:700;font-size:15px}
+.chips span{display:inline-flex;align-items:center;gap:6px}
+.chips i{font-style:normal;color:var(--sol)}
+.nota{font-style:italic;font-size:15px;opacity:.92;max-width:640px}
+
+/* CTA */
+.cta-faixa{padding-block:14px}
+.cta{display:block;width:100%;max-width:640px;margin:0 auto;text-align:center;text-decoration:none;background:var(--coral);color:#fff;font-family:var(--f-display);font-weight:800;font-size:clamp(20px,3.4vw,26px);letter-spacing:.02em;padding:14px 20px 10px;border-radius:16px;box-shadow:0 6px 0 var(--coral-esc);transition:transform .15s ease,box-shadow .15s ease}
+.cta:hover{transform:translateY(-2px);box-shadow:0 8px 0 var(--coral-esc)}
+.cta:active{transform:translateY(3px);box-shadow:0 3px 0 var(--coral-esc)}
+.cta:focus-visible,.comprar:focus-visible,summary:focus-visible{outline:3px solid var(--sol);outline-offset:3px}
+
+/* Como funciona */
+.passos{padding-block:34px 18px}
+.passos h2{font-size:clamp(26px,4vw,38px);color:var(--selva);text-align:center}
+.passos .apoio{color:var(--tinta-suave);text-align:center;margin-top:6px}
+.trilha{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:24px}
+@media (max-width:760px){.trilha{grid-template-columns:minmax(0,1fr);max-width:380px;margin-inline:auto}}
+.passo{background:var(--kraft);border-radius:18px;padding:16px;display:grid;gap:10px;text-align:center;position:relative}
+.passo .num{position:absolute;top:12px;left:12px;width:34px;height:34px;border-radius:50%;background:var(--selva);color:#fff;font-family:var(--f-display);font-weight:800;font-size:20px;display:grid;place-items:center;padding-top:3px}
+.passo .vis{aspect-ratio:1.15;display:grid;place-items:center;max-width:100%}
+.passo .vis svg{width:86%;height:auto}
+.passo h3{font-size:22px;color:var(--selva-esc)}
+.passo p{font-size:15px;color:var(--tinta-suave)}
+
+/* Galeria */
+.galeria{padding-block:28px 10px}
+.galeria h2{font-size:clamp(26px,4vw,38px);color:var(--selva)}
+.galeria .apoio{color:var(--tinta-suave);margin-top:6px}
+.grade{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:22px}
+@media (max-width:760px){.grade{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}}
+.peca{border-radius:14px;background:var(--bgp,#EEF6F0);overflow:hidden;display:grid;padding-bottom:10px}
+.peca .palco{margin-top:-4%}
+.peca strong{font-family:var(--f-display);font-size:clamp(14px,2vw,18px);text-align:center;line-height:1.1;margin-top:-8%}
+.peca small{display:block;text-align:center;font-size:12px;font-weight:700;color:var(--tinta-suave)}
+.foto-galeria{display:block;width:100%;height:auto;max-width:100%;border-radius:16px;margin-top:22px;box-shadow:0 14px 34px rgba(14,74,45,.16)}
+.mais{text-align:center;margin-top:16px;font-weight:800;color:var(--selva-esc)}
+
+/* Bônus */
+.bonus{padding-block:40px 30px}
+.presente{text-align:center;display:grid;gap:4px;margin-bottom:24px}
+.presente h2{font-size:clamp(30px,5vw,46px);color:var(--selva)}
+.presente p{font-weight:700;color:var(--tinta-suave)}
+.cards-bonus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:860px){.cards-bonus{grid-template-columns:minmax(0,1fr);max-width:420px;margin-inline:auto}}
+.card-b{border:2px solid var(--selva);border-radius:18px;background:#F1F8F3;padding:12px;display:flex;flex-direction:column;gap:12px}
+.capa-b{position:relative;aspect-ratio:1.25;border-radius:12px;display:grid;place-items:center;overflow:hidden}
+.capa-b img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.capa-b .emo{font-size:clamp(54px,9vw,78px);letter-spacing:-.1em}
+.etq{position:absolute;top:10px;left:10px;z-index:2;background:var(--selva);color:#fff;font-family:var(--f-display);font-weight:800;font-size:17px;padding:3px 10px 0;border-radius:8px}
+.card-b h3{font-size:22px;color:var(--selva-esc);text-align:center;padding-inline:4px}
+.card-b p{font-size:15px;color:var(--tinta-suave);text-align:center;font-style:italic;flex:1;padding-inline:4px}
+.precos{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:2px 4px 4px}
+.precos .de{font-weight:800}
+.precos .de s{color:var(--risco)}
+.precos .hoje{background:var(--ok);color:#fff;font-weight:800;border-radius:8px;padding:6px 12px}
+.ficha{width:62%;background:#fff;border-radius:10px;padding:10px;box-shadow:0 8px 18px rgba(0,0,0,.15);transform:rotate(-4deg);text-align:left;font-size:12px;line-height:1.35}
+.ficha b{display:block;font-family:var(--f-display);font-size:16px;color:var(--selva-esc)}
+.ficha span{display:block;border-top:1px dashed var(--linha);padding-top:3px;margin-top:3px}
+
+/* Depoimentos */
+.depo{background:linear-gradient(180deg,var(--selva) 0%,var(--selva-esc) 100%);color:#fff;padding-block:44px}
+.depo h2{font-size:clamp(28px,4.6vw,42px);color:var(--sol);text-align:center}
+.estrelas{color:var(--sol);letter-spacing:4px;font-size:22px;text-align:center}
+.cards-depo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:26px}
+@media (max-width:860px){.cards-depo{grid-template-columns:minmax(0,1fr);max-width:420px;margin-inline:auto}}
+.foto{border-radius:16px;border:4px solid #fff;overflow:hidden;background:rgba(255,255,255,.08)}
+.foto img{display:block;width:100%;height:auto}
+.cards-depo{align-items:start}
+.ilustr{text-align:center;font-size:12px;opacity:.7;margin-top:18px}
+.depo-txt{margin-top:12px;display:grid;gap:4px}
+.depo-txt .estrelas{text-align:left;font-size:18px}
+.depo-txt strong{font-style:italic}
+.depo-txt p{font-style:italic;font-size:15px;opacity:.9}
+.exemplo{display:inline-block;background:var(--sol);color:var(--selva-esc);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;border-radius:6px;padding:1px 7px;font-style:normal}
+
+/* Oferta */
+.merecem{background:var(--selva-esc);color:#fff;padding-block:22px;text-align:center}
+.merecem h2{font-size:clamp(32px,6vw,58px);text-transform:uppercase;line-height:.98}
+.oferta{background:var(--kraft);padding-block:34px}
+.caixa{max-width:430px;margin:0 auto;background:var(--papel);border:2px solid var(--selva);border-radius:20px;padding:18px;display:grid;gap:14px;box-shadow:0 18px 40px rgba(14,74,45,.18)}
+.desconto{background:#BDF0CF;color:var(--selva-esc);font-family:var(--f-display);font-weight:800;font-size:22px;text-align:center;border-radius:999px;padding:6px 10px 2px}
+.urg{color:var(--risco);font-weight:800;text-align:center;font-size:15px}
+.leva{background:#fff;border:1px solid var(--linha);border-radius:14px;padding:14px;display:grid;gap:8px;font-size:14px;font-weight:700}
+.leva h3{font-size:18px;text-align:center;letter-spacing:.04em;text-transform:uppercase}
+.leva li{list-style:none;display:flex;gap:8px;align-items:baseline}
+.leva ul{margin:0;padding:0;display:grid;gap:8px}
+.leva s{color:var(--risco);white-space:nowrap}
+.total{text-align:center;display:grid;gap:2px}
+.total .riscado{font-family:var(--f-display);font-weight:800;font-size:26px;color:var(--risco);text-decoration:line-through}
+.total .so{font-weight:800;letter-spacing:.04em;text-transform:uppercase;font-size:15px;margin-top:6px}
+.preco{font-family:var(--f-display);font-weight:800;color:var(--ok);font-size:64px;line-height:1;font-variant-numeric:tabular-nums}
+.preco sup{font-size:28px;vertical-align:top;position:relative;top:10px;margin-right:4px}
+.comprar{display:block;text-align:center;text-decoration:none;background:linear-gradient(180deg,#25C46C,var(--ok));color:#fff;font-family:var(--f-display);font-weight:800;font-size:24px;letter-spacing:.04em;padding:12px 10px 8px;border-radius:14px;box-shadow:0 5px 0 #13703C}
+.comprar:active{transform:translateY(3px);box-shadow:0 2px 0 #13703C}
+.pilula{justify-self:center;background:var(--selva);color:#fff;font-size:12px;font-weight:800;letter-spacing:.05em;border-radius:999px;padding:6px 14px;text-transform:uppercase;text-align:center}
+.economia{border:2px dashed var(--ok);background:#E8F7EE;border-radius:10px;text-align:center;font-weight:800;padding:9px}
+.garantias{display:grid;gap:8px}
+.garantias div{border:1px solid var(--linha);border-radius:10px;text-align:center;font-weight:800;font-size:14px;padding:9px}
+.entrega{text-align:center;font-weight:700;font-size:14px;color:var(--tinta-suave)}
+
+/* Comentários */
+.coment{background:#F2EEE3;padding-block:36px}
+.coment h2{font-size:clamp(24px,4vw,34px);text-align:center;color:var(--selva)}
+.lista-c{max-width:640px;margin:20px auto 0;background:#fff;border-radius:16px;padding:18px;display:grid;gap:16px}
+.c{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px}
+.av{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:800;color:#fff;font-family:var(--f-display);font-size:18px}
+.bolha{background:#F4F4F1;border-radius:14px;padding:10px 14px;font-size:15px}
+.bolha strong{display:block;font-size:14px}
+.acoes{font-size:13px;color:var(--tinta-suave);margin-top:4px;padding-left:4px}
+
+/* Garantia */
+.garantia{background:var(--selva);color:#fff;padding-block:44px;text-align:center;clip-path:polygon(0 0,50% 14%,100% 0,100% 100%,0 100%)}
+.selo{width:170px;height:170px;margin:30px auto 18px;border-radius:50%;background:radial-gradient(circle,#FFE38A 0 55%,#E0A812 56% 62%,#FFD24D 63% 100%);display:grid;place-items:center;color:var(--selva-esc);box-shadow:0 0 0 8px rgba(255,197,49,.25)}
+.selo b{font-family:var(--f-display);font-size:62px;line-height:.8;display:block}
+.selo span{font-family:var(--f-display);font-weight:800;font-size:18px;letter-spacing:.12em}
+.garantia p{max-width:600px;margin:0 auto;font-size:18px}
+
+/* Sobre */
+.sobre{padding-block:44px}
+.sobre h2{font-size:clamp(38px,7vw,64px);color:var(--selva);text-align:center;margin-bottom:18px}
+.sobre p{font-style:italic;color:var(--tinta-suave);margin-bottom:14px;max-width:62ch;margin-inline:auto}
+
+/* FAQ */
+.faq{background:var(--selva-esc);color:#fff;padding-block:48px}
+.faq h2{font-size:clamp(24px,4vw,32px);margin-bottom:18px}
+details{border-bottom:1px solid rgba(255,255,255,.25)}
+summary{cursor:pointer;list-style:none;padding:14px 0;font-weight:700;display:flex;gap:10px;align-items:baseline}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"▸";color:var(--sol);transition:transform .2s}
+details[open] summary::before{transform:rotate(90deg)}
+details p{padding:0 0 16px 22px;opacity:.9;max-width:70ch}
+
+/* Rodapé */
+.rodape{background:#0A3621;color:rgba(255,255,255,.8);padding-block:30px;font-size:13px}
+.rodape .miolo{display:flex;flex-wrap:wrap;gap:16px 30px;justify-content:space-between;align-items:center}
+.rodape .nome{font-family:var(--f-display);font-weight:800;font-size:26px;color:var(--sol)}
+.rodape .seg{display:flex;gap:10px;flex-wrap:wrap}
+.rodape .seg span{border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 10px;font-weight:700}
+</style>
+</head>
+<body>
+
+
+<!-- Molde (planificação) reutilizado nos desenhos -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <g id="molde-leao">
+      <!-- abas de cola -->
+      <g fill="#F7E3B0" stroke="#7a5a2a" stroke-width="1.2">
+        <path d="M80 10 L88 2 L122 2 L130 10Z"/>
+        <path d="M30 60 L22 68 L22 102 L30 110Z"/>
+        <path d="M230 60 L238 68 L238 102 L230 110Z"/>
+        <path d="M80 160 L88 168 L122 168 L130 160Z"/>
+        <path d="M130 10 L138 18 L138 52 L130 60Z"/>
+      </g>
+      <!-- faces -->
+      <g fill="#F2B33D" stroke="#7a5a2a" stroke-width="1.6">
+        <rect x="80" y="10" width="50" height="50"/>
+        <rect x="30" y="60" width="50" height="50"/>
+        <rect x="80" y="60" width="50" height="50"/>
+        <rect x="130" y="60" width="50" height="50"/>
+        <rect x="180" y="60" width="50" height="50"/>
+        <rect x="80" y="110" width="50" height="50"/>
+      </g>
+      <!-- dobras -->
+      <g stroke="#7a5a2a" stroke-width="1.4" stroke-dasharray="4 3" fill="none">
+        <path d="M80 60 H130 M80 110 H130 M80 60 V110 M130 60 V110 M180 60 V110"/>
+      </g>
+      <!-- rosto -->
+      <circle cx="96" cy="78" r="4" fill="#1b1b1b"/><circle cx="114" cy="78" r="4" fill="#1b1b1b"/>
+      <rect x="96" y="88" width="18" height="12" rx="3" fill="#FCE7B8" stroke="#7a5a2a"/>
+      <path d="M102 90 h6 l-3 4z" fill="#1b1b1b"/>
+    </g>
+  </defs>
+</svg>
+
+<div class="topo faixa">🌿 Cada bichinho montado em casa é uma tarde inteira longe da tela.</div>
+
+<!-- HERO -->
+<header class="hero faixa">
+  <div class="miolo">
+    <div class="selo-marca">Zoo de Papel 3D</div>
+    <h1>Seu filho monta o <em>próprio zoológico</em> com papel, tesoura e cola, e <em>esquece o celular</em> por horas</h1>
+    <p class="sub">Imprima o molde, recorte, dobre e pronto: o bicho fica em pé!</p>
+
+    <div class="vitrine">
+      <div class="titulo-produto"><b>+120</b> Animais de Papel 3D</div>
+      <div class="mesa">
+        <div class="folha-molde" aria-hidden="true"><img src="img/molde-leao.webp" width="1100" height="777" alt=""><small>molde</small></div>
+        <div class="lado"><img class="bicho3d" src="img/elefante-3d.webp" width="460" height="593" alt="Elefante de papel 3D montado a partir do molde"></div>
+        <div><img class="bicho3d" src="img/leao-3d.webp" width="460" height="593" alt="Leão de papel 3D montado a partir do molde"></div>
+        <div class="lado"><img class="bicho3d" src="img/panda-3d.webp" width="460" height="593" alt="Panda de papel 3D montado a partir do molde"></div>
+      </div>
+      <p class="dica">Assim fica o bichinho montado com o molde do kit</p>
+    </div>
+
+    <div class="chips">
+      <span><i>✔</i> Arquivos em PDF</span>
+      <span><i>✔</i> Imprima quantas vezes quiser</span>
+      <span><i>✔</i> De 4 a 12 anos</span>
+      <span><i>✔</i> Acesso vitalício</span>
+    </div>
+    <p class="nota">Rasgou a orelha da girafa? Sumiu a tromba do elefante? Sem problema: é só imprimir de novo.</p>
+  </div>
+</header>
+
+<div class="cta-faixa faixa"><a class="cta" href="#oferta">QUERO O ZOO DE PAPEL 🐾</a></div>
+
+<!-- COMO FUNCIONA -->
+<section class="passos faixa">
+  <div class="miolo">
+    <h2>Da folha de papel para um bicho em 3D</h2>
+    <p class="apoio">Em três passos simples, sem material caro.</p>
+    <div class="trilha">
+      <div class="passo">
+        <span class="num">1</span>
+        <div class="vis">
+          <div class="folha"><img src="img/molde-leao.webp" width="1100" height="777" alt="Página do molde do leão, pronta para imprimir"></div>
+        </div>
+        <h3>Imprima o molde</h3>
+        <p>Folha A4 comum, em casa ou na papelaria. Cada animal já vem desenhado e colorido.</p>
+      </div>
+      <div class="passo">
+        <span class="num">2</span>
+        <div class="vis">
+          <div class="recorte"><img src="img/molde-recorte.webp" width="715" height="577" alt="Molde da cabeça do leão recortado, pronto para dobrar"><span class="tesoura" aria-hidden="true">✂️</span><small>dobre no tracejado</small></div>
+        </div>
+        <h3>Recorte e dobre</h3>
+        <p>Corte na linha contínua, dobre na tracejada e cole as abinhas. Ótimo para treinar a coordenação.</p>
+      </div>
+      <div class="passo">
+        <span class="num">3</span>
+        <div class="vis"><img class="bicho3d" src="img/leao-3d.webp" width="460" height="593" alt="Leão de papel 3D pronto" style="width:62%"></div>
+        <h3>Brinque com o bicho em 3D</h3>
+        <p>O molde vira um bichinho de pé, firme, para brincar, montar o zoológico e decorar o quarto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIA -->
+<section class="galeria faixa">
+  <div class="miolo">
+    <div class="centro">
+      <h2>Alguns dos bichos que vêm no kit</h2>
+      <p class="apoio">Assim ficam os bichos e os cenários depois de montados.</p>
+    </div>
+    <img class="foto-galeria" src="img/galeria-2.webp" alt="Leão, girafa, elefante, zebra, porco, sapo, macaco, arara, urso-polar, pinguim, onça e dinossauro de papel montados, e cenários de fazenda, savana, polo, deserto, fundo do mar e castelo" width="1312" height="1199">
+    <p class="mais">+ mais de 100 outros animais de savana, floresta, fazenda, mar e polo</p>
+  </div>
+</section>
+
+<div class="cta-faixa faixa"><a class="cta" href="#oferta">QUERO O ZOO DE PAPEL 🐾</a></div>
+
+<!-- BÔNUS -->
+<section class="bonus faixa">
+  <div class="miolo">
+    <div class="presente">
+      <h2>🎁 E ainda tem mais...</h2>
+      <p>Comprando hoje, você recebe de presente:</p>
+    </div>
+    <div class="cards-bonus">
+      <article class="card-b">
+        <div class="capa-b" style="background:#E3D7FF"><span class="etq">BÔNUS 1</span><img src="img/bonus-1.webp" alt="Dinossauro de papel 3D montado" width="800" height="731"></div>
+        <h3>Vale dos Dinossauros 3D</h3>
+        <p>15 dinossauros para recortar e montar, do T-Rex ao Tricerátops, com vulcão de papel para completar o cenário.</p>
+        <div class="precos"><span class="de">Valor: <s>R$ 29,90</s></span><span class="hoje">Hoje: R$ 0,00</span></div>
+      </article>
+      <article class="card-b">
+        <div class="capa-b" style="background:#CFEFDC"><span class="etq">BÔNUS 2</span><img src="img/bonus-2.webp" alt="Cenário com árvore, cerca e porquinho de papel" width="800" height="731"></div>
+        <h3>Cenários para montar</h3>
+        <p>Celeiro, cerca, árvores, lago e rochas em 3D para a criança criar o habitat de cada bicho e inventar histórias.</p>
+        <div class="precos"><span class="de">Valor: <s>R$ 27,90</s></span><span class="hoje">Hoje: R$ 0,00</span></div>
+      </article>
+      <article class="card-b">
+        <div class="capa-b" style="background:#FFF0B8"><span class="etq">BÔNUS 3</span>
+          <img src="img/bonus-3-ficha.webp" alt="Folha impressa com as fichas Você sabia? do leão, elefante, porquinho e vaca, ao lado de um leão de papel montado" width="800" height="731">
+        </div>
+        <h3>Fichas "Você sabia?"</h3>
+        <p>Uma ficha de curiosidades para cada animal: o que come, onde vive e quanto pesa. Perfeito para a escola.</p>
+        <div class="precos"><span class="de">Valor: <s>R$ 19,90</s></span><span class="hoje">Hoje: R$ 0,00</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS COM FOTO -->
+<section class="depo faixa">
+  <div class="miolo">
+    <h2>Quem montou, aprovou!</h2>
+    <div class="estrelas" aria-label="5 estrelas">★★★★★</div>
+    <!-- Troque cada bloco pela foto e pelo depoimento real de um cliente (com permissão dele). -->
+    <div class="cards-depo">
+      <figure style="margin:0">
+        <div class="foto"><img src="img/criancas-1b.webp" width="954" height="1649" alt="Crianças mostrando leão, girafa, elefante e zebra de papel montados"></div>
+        <figcaption class="depo-txt">
+          <div class="estrelas">★★★★★</div>
+          <strong>Patrícia Ferreira</strong>
+          <p>“Usei as atividades com as crianças e foi um sucesso! Elas adoraram recortar, montar os personagens e aprender curiosidades sobre os animais. Uma ótima opção para estimular a criatividade.”</p>
+        </figcaption>
+      </figure>
+      <figure style="margin:0">
+        <div class="foto"><img src="img/criancas-2b.webp" width="1244" height="1178" alt="Duas crianças com macaco, girafa e uma fazenda de papel montada na mesa"></div>
+        <figcaption class="depo-txt">
+          <div class="estrelas">★★★★★</div>
+          <strong>Juliana Martins</strong>
+          <p>“Achei a ideia incrível! Os modelos são muito fofos e a montagem virou uma atividade especial na sala de aula. Meus alunos adoraram criar a própria fazendinha e inventar as histórias com os animais.”</p>
+        </figcaption>
+      </figure>
+      <figure style="margin:0">
+        <div class="foto"><img src="img/familia-b.webp" width="1086" height="1448" alt="Mãe e duas filhas mostrando porquinho e girafa de papel montados, com sapo, macaco e elefante na mesa"></div>
+        <figcaption class="depo-txt">
+          <div class="estrelas">★★★★★</div>
+          <strong>Mariana Oliveira</strong>
+          <p>“Minhas filhas adoraram! Elas ficaram superanimadas montando os bichinhos e criando os próprios cenários. Foi uma atividade divertida e ainda passaram um bom tempo longe das telas.”</p>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- OFERTA -->
+<div class="merecem faixa"><h2>Seu filho merece<br>brincar de verdade</h2></div>
+
+<section class="oferta faixa" id="oferta">
+  <div class="caixa">
+    <div class="desconto">95% DE DESCONTO HOJE</div>
+    <p class="urg">⏰ Os 3 bônus estão liberados só para quem comprar hoje</p>
+    <div class="leva">
+      <h3>🎁 Você leva hoje</h3>
+      <ul>
+        <li>✅ <span>+120 animais de papel 3D em alta definição</span></li>
+        <li>🎁 <span>Bônus 1: Vale dos Dinossauros 3D <s>(R$ 29,90)</s></span></li>
+        <li>🎁 <span>Bônus 2: Cenários para montar <s>(R$ 27,90)</s></span></li>
+        <li>🎁 <span>Bônus 3: Fichas "Você sabia?" <s>(R$ 19,90)</s></span></li>
+        <li style="padding-top:4px">➕ <span>BÔNUS EXTRA: novos animais todo mês, sem custo <s>(R$ 37,90)</s></span></li>
+      </ul>
+    </div>
+    <div class="total">
+      <span>🎁 <b>Valor total com bônus:</b></span>
+      <span class="riscado">R$ 212,60</span>
+      <span class="so">🔥 Mas só hoje você paga</span>
+      <span class="preco"><sup>R$</sup>10</span>
+    </div>
+    <!-- Troque #checkout pelo link do seu checkout -->
+    <a class="comprar" href="#checkout">COMPRAR AGORA</a>
+    <span class="pilula">Pagamento único · sem mensalidade</span>
+    <div class="economia">Você economiza R$ 202,60 hoje</div>
+    <p class="entrega">📲 Entrega imediata no seu e-mail e WhatsApp</p>
+    <div class="garantias">
+      <div>🔒 Compra 100% segura</div>
+      <div>⚡ Acesso liberado logo após o pagamento</div>
+      <div>✅ Satisfação garantida ou seu dinheiro de volta</div>
+    </div>
+  </div>
+</section>
+
+
+<div class="cta-faixa faixa" style="padding-block:22px"><a class="cta" href="#oferta">QUERO O ZOO DE PAPEL 🐾</a></div>
+
+<!-- GARANTIA -->
+<section class="garantia faixa">
+  <div class="selo" aria-label="Garantia de 30 dias"><div><b>30</b><span>DIAS</span></div></div>
+  <p>Teste o Zoo de Papel 3D por 30 dias. Se a criançada não gostar, é só mandar uma mensagem e devolvemos 100% do seu dinheiro. Sem perguntas e sem burocracia.</p>
+</section>
+
+<!-- SOBRE -->
+<section class="sobre faixa">
+  <div class="estreito">
+    <h2>Olá! Muito prazer!</h2>
+    <p>O <b>Zoo de Papel 3D</b> nasceu para pais e professores que querem tirar a criança da tela sem brigar com ela. Em vez de proibir o celular, a gente oferece algo mais divertido: construir os próprios bichos com as mãos.</p>
+    <p>Enquanto recorta, dobra e cola, a criança treina a coordenação motora fina, a atenção e a paciência. E ainda aprende sobre cada animal e o lugar onde ele vive. Tudo pronto para imprimir em folha A4 comum, feito com muito carinho. 💚</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq faixa">
+  <div class="miolo">
+    <h2>Você pode estar se perguntando…</h2>
+    <details><summary>O que quer dizer "papel 3D"?</summary><p>Cada animal vem num molde para imprimir. Depois de recortar, dobrar e colar, ele vira um bichinho com volume, que fica em pé sozinho, igual aos que você viu girando nesta página.</p></details>
+    <details><summary>Quais são as formas de pagamento?</summary><p>Pix, cartão de crédito e boleto. No Pix e no cartão o acesso é liberado na hora.</p></details>
+    <details><summary>Como recebo o material?</summary><p>Logo após a confirmação do pagamento, você recebe no e-mail e no WhatsApp o link para baixar todos os PDFs.</p></details>
+    <details><summary>Tenho que pagar todo mês?</summary><p>Não. É um pagamento único de R$ 10 e o acesso é seu para sempre, incluindo os animais novos que forem adicionados.</p></details>
+    <details><summary>Preciso de papel especial ou impressora colorida?</summary><p>Não. Funciona em folha A4 comum. Se tiver papel mais grosso (180 g), os bichos ficam mais firmes. Também há versões em preto e branco para a criança colorir.</p></details>
+    <details><summary>Para qual idade é indicado?</summary><p>De 4 a 12 anos. Os menores montam com ajuda de um adulto nos recortes; os maiores fazem tudo sozinhos.</p></details>
+    <details><summary>Serve para usar na escola?</summary><p>Sim. Professores usam em aulas de ciências, geografia e artes. As fichas "Você sabia?" ajudam a transformar a montagem em atividade pedagógica.</p></details>
+    <details><summary>Posso tirar dúvidas depois da compra?</summary><p>Pode. Nosso suporte atende pelo WhatsApp e pelo e-mail informado no material.</p></details>
+  </div>
+</section>
+
+<footer class="rodape faixa">
+  <div class="miolo">
+    <div class="nome">Zoo de Papel 3D</div>
+    <div class="seg"><span>🔒 Site seguro</span><span>✅ Compra protegida</span></div>
+    <div>Política de Privacidade · Termos de Uso<br>© 2026 Zoo de Papel 3D. Todos os direitos reservados.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // ---------- peças ----------
+  // Cada bicho é feito de "caixinhas" de papel: [largura, altura, profundidade, x, y, z, cor, padrão, rosto(html)]
+  var PINTAS = function(c){return "radial-gradient(circle at 30% 30%,"+c+" 0 3px,transparent 4px),radial-gradient(circle at 75% 70%,"+c+" 0 3px,transparent 4px)";};
+  var GIRAFA = "radial-gradient(circle at 30% 30%,#B8732F 0 5px,transparent 6px),radial-gradient(circle at 75% 72%,#B8732F 0 6px,transparent 7px)";
+  var LISTRAS = "repeating-linear-gradient(90deg,#222 0 5px,transparent 5px 12px)";
+  var VACA = "radial-gradient(ellipse 9px 7px at 30% 35%,#222 98%,transparent),radial-gradient(ellipse 6px 8px at 78% 75%,#222 98%,transparent)";
+
+  var olhos = function(oy){return '<i class="olho e"'+(oy?' style="--oy:'+oy+'"':'')+'></i><i class="olho d"'+(oy?' style="--oy:'+oy+'"':'')+'></i>';};
+  var bochechas = '<i class="boch e"></i><i class="boch d"></i>';
+  var nariz = '<i class="nariz"></i>';
+  var narinas = '<i class="narina e"></i><i class="narina d"></i>';
+
+  function cabeca(c,pat,extra){return [70,64,64,0,-30,0,c,pat,(extra||'')+olhos()+bochechas];}
+  function corpo(c,pat,frente){return [52,44,40,0,24,0,c,pat,frente||''];}
+  function par(w,h,d,x,y,z,c,pat,f){return [[w,h,d,-x,y,z,c,pat,f],[w,h,d,x,y,z,c,pat,f]];}
+
+  var M = {
+    leao:{chao:46,p:[
+      [94,88,30,0,-30,-12,"#B5651D"],
+      cabeca("#F2B33D"),
+      [32,22,8,0,-14,36,"#FCE7B8",null,nariz],
+      corpo("#F2B33D"),
+      [8,8,34,0,34,-36,"#B5651D"]
+    ]},
+    elefante:{chao:46,p:[].concat(
+      par(6,54,46,39,-30,-2,"#B9C2CC"),
+      [cabeca("#9AA5B1"),
+      [16,44,14,0,-4,39,"#8C97A3"],
+      corpo("#9AA5B1")])},
+    girafa:{chao:50,p:[].concat(
+      [[58,40,40,0,30,0,"#F4C542",GIRAFA],
+      [24,56,24,0,-14,6,"#F4C542",GIRAFA],
+      [44,40,48,0,-58,8,"#F4C542",GIRAFA,olhos("30%")+bochechas],
+      [32,18,10,0,-46,37,"#F7DFA0",null,'<i class="narina e" style="background:#8a5a2b"></i><i class="narina d" style="background:#8a5a2b"></i>']],
+      par(6,14,6,11,-85,6,"#8B5A2B"),
+      par(14,8,8,28,-66,4,"#F4C542"))},
+    zebra:{chao:46,p:[].concat(
+      [[10,10,70,0,-67,-2,"#222"],
+      cabeca("#FAFAFA",LISTRAS),
+      [40,22,10,0,-12,37,"#4A4A4A",null,'<i class="narina e" style="background:#222"></i><i class="narina d" style="background:#222"></i>'],
+      corpo("#FAFAFA",LISTRAS)],
+      par(10,16,8,22,-70,8,"#FAFAFA"))},
+    onca:{chao:46,p:[].concat(
+      [cabeca("#F0A93B",PINTAS("#5a3410")),
+      [30,20,8,0,-16,36,"#FFF1D6",null,nariz],
+      corpo("#F0A93B",PINTAS("#5a3410"))],
+      par(16,14,8,24,-68,4,"#F0A93B"))},
+    macaco:{chao:46,p:[].concat(
+      [[70,64,64,0,-30,0,"#8B5A3C",null,'<i class="mascara" style="background:#E8C29C"></i>'+olhos()+'<i class="boca"></i>'],
+      corpo("#8B5A3C",null,'<i class="barriga" style="--bc:#E8C29C"></i>'),
+      [8,8,40,0,40,-36,"#8B5A3C"]],
+      par(8,22,18,38,-30,0,"#D9A77F"))},
+    arara:{chao:52,p:[].concat(
+      [[60,58,58,0,-30,0,"#E63946",null,olhos("30%")],
+      [16,22,16,0,-16,37,"#EFEFEF"],
+      [48,44,38,0,22,0,"#E63946"],
+      [24,46,8,0,40,-22,"#F7C948"]],
+      par(8,38,30,28,22,0,"#2A6FDB"))},
+    sapo:{chao:44,p:[].concat(
+      [[78,52,60,0,-20,0,"#5DBB63",null,bochechas+'<i class="boca" style="left:24%;width:52%;top:46%"></i>'],
+      [60,34,44,0,23,0,"#5DBB63",null,'<i class="barriga" style="--bc:#CDEFB8"></i>']],
+      par(24,24,24,22,-56,10,"#5DBB63",null,'<i class="olhao"></i>'))},
+    porco:{chao:46,p:[].concat(
+      [cabeca("#F7A9B8"),
+      [30,22,10,0,-16,37,"#F28CA0",null,narinas],
+      corpo("#F7A9B8")],
+      par(18,10,14,24,-67,6,"#F28CA0"))},
+    vaca:{chao:46,p:[].concat(
+      [cabeca("#FFFFFF",VACA),
+      [44,24,10,0,-10,37,"#F6B7C3",null,narinas],
+      corpo("#FFFFFF",VACA)],
+      par(8,14,8,24,-69,0,"#EADBB5"),
+      par(18,10,10,43,-46,0,"#FFFFFF"))},
+    pinguim:{chao:52,p:[].concat(
+      [[70,64,64,0,-30,0,"#2B2D42",null,'<i class="mascara"></i>'+olhos()+bochechas],
+      [16,10,14,0,-20,39,"#FFA62B"],
+      corpo("#2B2D42",null,'<i class="barriga"></i>')],
+      par(6,34,24,29,24,0,"#2B2D42"),
+      par(18,6,20,13,49,8,"#FFA62B"))},
+    panda:{chao:46,p:[].concat(
+      [[70,64,64,0,-30,0,"#FAFAFA",null,'<i class="mancha e"></i><i class="mancha d"></i>'+olhos()+'<i class="boca" style="left:42%;width:16%"></i>'],
+      corpo("#2A2A2A")],
+      par(18,18,12,26,-68,0,"#2A2A2A"))},
+    urso:{chao:46,p:[].concat(
+      [cabeca("#F3F6F9"),
+      [30,22,12,0,-16,38,"#E1E7EE",null,nariz],
+      corpo("#F3F6F9")],
+      par(14,14,10,26,-67,2,"#E1E7EE"))},
+    dino:{chao:62,p:[].concat(
+      [[64,50,64,0,14,-6,"#4CAF6A"],
+      [52,44,60,0,-38,20,"#4CAF6A",null,olhos("26%")+'<i class="dentes"></i>'],
+      [22,22,56,0,26,-62,"#4CAF6A"],
+      [8,12,12,0,-17,-24,"#FF9F43"],[8,12,12,0,-17,-6,"#FF9F43"],[8,12,12,0,-66,14,"#FF9F43"],[8,10,10,0,10,-62,"#FF9F43"]],
+      par(16,22,18,20,50,10,"#3E9A5A"),
+      par(16,22,18,20,50,-20,"#3E9A5A"))},
+    arvore:{chao:56,p:[
+      [18,48,18,0,30,0,"#8B5A2B"],
+      [76,60,76,0,-24,0,"#3FA65A"],
+      [44,30,44,0,-68,0,"#58BF6E"],
+      [8,30,8,-70,41,40,"#C98B4F"],[8,30,8,-35,41,40,"#C98B4F"],[8,30,8,35,41,40,"#C98B4F"],[8,30,8,70,41,40,"#C98B4F"],
+      [150,6,6,0,34,40,"#E0A86A"],[150,6,6,0,48,40,"#E0A86A"],
+      [26,20,26,-62,46,-30,"#F7A9B8",null,olhos("30%")]
+    ]}
+  };
+
+  var FACES = [
+    ["f",0,"translateZ(D)"],["k",0,"rotateY(180deg) translateZ(D)"],
+    ["r",1,"rotateY(90deg) translateZ(W)"],["l",1,"rotateY(-90deg) translateZ(W)"],
+    ["t",2,"rotateX(90deg) translateZ(H)"],["b",2,"rotateX(-90deg) translateZ(H)"]
+  ];
+  function caixa(p){
+    var w=p[0],h=p[1],d=p[2],el=document.createElement("div");
+    el.className="bx";
+    el.style.transform="translate3d("+p[3]+"px,"+p[4]+"px,"+p[5]+"px)";
+    FACES.forEach(function(f){
+      var fw = f[1]===1 ? d : w, fh = f[1]===2 ? d : h;
+      var fc=document.createElement("div");
+      fc.className="fc "+f[0];
+      fc.style.cssText="width:"+fw+"px;height:"+fh+"px;left:"+(-fw/2)+"px;top:"+(-fh/2)+"px;background-color:"+p[6]+";"+(p[7]?"background-image:"+p[7]+";":"")+
+        "transform:"+f[2].replace("D",(d/2)+"px").replace("W",(w/2)+"px").replace("H",(h/2)+"px");
+      if(f[0]==="f" && p[8]) fc.innerHTML=p[8];
+      el.appendChild(fc);
+    });
+    return el;
+  }
+  function montar(palco){
+    var m=M[palco.dataset.bicho]; if(!m) return;
+    var cena=document.createElement("div"); cena.className="cena";
+    var sombra=document.createElement("div"); sombra.className="sombra";
+    sombra.style.transform="translate3d(0,"+m.chao+"px,0) rotateX(90deg)";
+    cena.appendChild(sombra);
+    var gira=document.createElement("div"); gira.className="gira";
+    if(palco.dataset.atraso) gira.style.setProperty("--atraso",palco.dataset.atraso+"s");
+    m.p.forEach(function(p){gira.appendChild(caixa(p));});
+    cena.appendChild(gira); palco.appendChild(cena);
+    var ajusta=function(){palco.style.setProperty("--s",(palco.clientWidth/210*(parseFloat(palco.dataset.zoom)||1)).toFixed(3));};
+    ajusta();
+    if(window.ResizeObserver) new ResizeObserver(ajusta).observe(palco);
+
+    // arrastar para girar
+    var ini=null, base=-28;
+    palco.addEventListener("pointerdown",function(e){
+      ini=e.clientX;
+      var mt=getComputedStyle(gira).transform;
+      if(mt && mt!=="none"){ try{ var mm=new DOMMatrix(mt); base=Math.atan2(-mm.m31,mm.m11)*180/Math.PI; }catch(_){} }
+      palco.classList.add("manual"); gira.style.setProperty("--ry",base+"deg");
+      try{palco.setPointerCapture(e.pointerId);}catch(_){}
+    });
+    palco.addEventListener("pointermove",function(e){
+      if(ini===null) return;
+      gira.style.setProperty("--ry",(base+(e.clientX-ini)*0.8)+"deg");
+    });
+    var solta=function(e){ if(ini===null) return; base=base+(e.clientX-ini)*0.8; ini=null; };
+    palco.addEventListener("pointerup",solta);
+    palco.addEventListener("pointercancel",solta);
+  }
+  document.querySelectorAll(".palco[data-bicho]").forEach(montar);
+})();
+</script>
+
+</body>
+</html>
