@@ -172,6 +172,19 @@ img{max-width:100%}
 .passo p{color:var(--suave);font-size:14px}
 .aviso{font-size:13px;color:var(--suave);margin-top:40px}
 
+/* Provas */
+.provas{background:var(--papel);padding-block:56px}
+.provas h2{font-size:clamp(26px,4vw,36px);color:var(--verde-esc);margin-top:10px}
+.provas .apoio{color:var(--suave);margin-top:12px;max-width:580px}
+.provas-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:36px;max-width:900px;margin-inline:auto}
+@media(max-width:600px){.provas-grid{grid-template-columns:1fr}}
+.prova-card{border-radius:14px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.10)}
+.prova-card img{display:block;width:100%;height:auto}
+.molde-duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:900px;margin:20px auto 0}
+@media(max-width:600px){.molde-duo{grid-template-columns:1fr}}
+.molde-duo figure{margin:0;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.09)}
+.molde-duo img{display:block;width:100%;height:auto}
+
 /* Oferta */
 .oferta{padding-block:64px}
 .oferta .duo{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
@@ -270,9 +283,9 @@ img{max-width:100%}
     <h2>Não é só bichinho.<br>É um mundo inteiro de papel.</h2>
     <p class="apoio">Os 150 animais continuam no kit. E a diversão vai além com os bônus de brinquedos e personagens.</p>
     <div class="cards">
-      <article class="card"><div class="vis" style="background:#FFE9C7" aria-hidden="true">🎮</div><div class="txt"><h3>Games e desenhos</h3><p>Personagens de games e desenhos para ganhar vida fora das telas.</p></div></article>
-      <article class="card"><div class="vis" style="background:#F9DDEA" aria-hidden="true">🦸</div><div class="txt"><h3>Heróis e princesas</h3><p>Personagens para inventar aventuras, histórias e um universo de brincadeiras.</p></div></article>
-      <article class="card"><div class="vis" style="background:#DCEFFB" aria-hidden="true">🚗</div><div class="txt"><h3>Carros e personagens para montar</h3><p>Do molde ao brinquedo: recorte, dobre e descubra a diversão de criar com as mãos.</p></div></article>
+      <article class="card"><div class="vis"><img src="img/panda-3d.webp" width="800" height="800" loading="lazy" alt="Panda de papel 3D montado"></div><div class="txt"><h3>Games e desenhos</h3><p>Personagens de games e desenhos para ganhar vida fora das telas.</p></div></article>
+      <article class="card"><div class="vis"><img src="img/leao-3d.webp" width="800" height="800" loading="lazy" alt="Leão de papel 3D montado"></div><div class="txt"><h3>Heróis e princesas</h3><p>Personagens para inventar aventuras, histórias e um universo de brincadeiras.</p></div></article>
+      <article class="card"><div class="vis"><img src="img/bonus-3-ficha.webp" width="800" height="800" loading="lazy" alt="Ficha de personagem para montar"></div><div class="txt"><h3>Carros e personagens para montar</h3><p>Do molde ao brinquedo: recorte, dobre e descubra a diversão de criar com as mãos.</p></div></article>
       <article class="card"><div class="vis"><img src="img/bonus-1.webp" width="800" height="731" loading="lazy" alt="Dinossauro de papel 3D montado em cima da mesa"></div><div class="txt"><h3>150 animais de papel 3D</h3><p>Leões, girafas, pandas e uma coleção de animais para montar seu próprio mundo.</p></div></article>
     </div>
     <h3 class="sub2">Os animais também fazem parte da diversão</h3>
@@ -285,9 +298,14 @@ img{max-width:100%}
         <li><svg class="ico"><use href="#i-check"/></svg> Diversos personagens</li>
         <li><svg class="ico"><use href="#i-check"/></svg> Games</li>
         <li><svg class="ico"><use href="#i-check"/></svg> Heróis</li>
+        <li><svg class="ico"><use href="#i-check"/></svg> Minecraft</li>
+        <li><svg class="ico"><use href="#i-check"/></svg> Peppa Pig</li>
+        <li><svg class="ico"><use href="#i-check"/></svg> Pokémon</li>
+        <li><svg class="ico"><use href="#i-check"/></svg> Power Rangers</li>
         <li><svg class="ico"><use href="#i-check"/></svg> Princesas</li>
-        <li><svg class="ico"><use href="#i-check"/></svg> Animes</li>
-        <li><svg class="ico"><use href="#i-check"/></svg> Personagens de séries infantis</li>
+        <li><svg class="ico"><use href="#i-check"/></svg> Rainbow Friends</li>
+        <li><svg class="ico"><use href="#i-check"/></svg> Roblox</li>
+        <li><svg class="ico"><use href="#i-check"/></svg> Sítio da Pica-Pau Amarelo</li>
       </ul>
     </div>
   </div>
@@ -307,6 +325,22 @@ img{max-width:100%}
       </div>
     </div>
     <p class="aviso">Nas atividades com tesoura, acompanhe a criança e utilize materiais adequados à idade.</p>
+  </div>
+</section>
+
+<section class="provas faixa centro">
+  <div class="miolo">
+    <div class="olho">Quem já montou, aprovou</div>
+    <h2>Feito com papel, tesoura<br>e muito amor.</h2>
+    <p class="apoio">Veja como ficaram os brinquedos montados por quem já tem o kit em casa.</p>
+    <div class="provas-grid">
+      <div class="prova-card"><img src="img/prova-1.webp" loading="lazy" alt="Criança com brinquedos de papel montados"></div>
+      <div class="prova-card"><img src="img/prova-2.webp" loading="lazy" alt="Brinquedos de papel montados na mesa"></div>
+    </div>
+    <div class="molde-duo">
+      <figure><img src="img/molde-leao.webp" loading="lazy" alt="Molde do leão de papel para recortar e montar"></figure>
+      <figure><img src="img/molde-recorte.webp" loading="lazy" alt="Molde com instruções de recorte e montagem"></figure>
+    </div>
   </div>
 </section>
 
