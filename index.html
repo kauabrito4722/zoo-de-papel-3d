@@ -130,10 +130,19 @@ h2 .hl{color:var(--green-700)}
 .section-heading>p:last-child{color:var(--muted);margin-top:14px;font-size:16px;line-height:1.7}
 
 /* ============================================================
-   SHOWCASE GRID (= game covers)
+   SHOWCASE CAROUSEL (= game covers, auto-scroll)
    ============================================================ */
-.showcase-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:14px;display:grid}
-.showcase-grid .ph{aspect-ratio:3/4;min-height:0}
+.carousel{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.carousel-row{display:flex;gap:14px;width:max-content;will-change:transform}
+.carousel-row+.carousel-row{margin-top:14px}
+.carousel-row.to-left{animation:scroll-left 40s linear infinite}
+.carousel-row.to-right{animation:scroll-right 40s linear infinite}
+.carousel:hover .carousel-row{animation-play-state:paused}
+.c-item{flex:0 0 auto;width:150px}
+.c-item .ph{aspect-ratio:3/4;min-height:0;margin:0}
+@keyframes scroll-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scroll-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+@media (prefers-reduced-motion:reduce){.carousel-row{animation:none!important}}
 
 /* ============================================================
    FEATURES (= value proposition)
@@ -259,7 +268,6 @@ footer small{color:var(--muted);font-size:12px;display:block;line-height:1.6}
    RESPONSIVE
    ============================================================ */
 @media (max-width:860px){
-  .showcase-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
   .bonus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .offer-section{gap:34px}
 }
@@ -276,7 +284,7 @@ footer small{color:var(--muted);font-size:12px;display:block;line-height:1.6}
   .wrap{padding:0 18px}
   h2{font-size:27px}
   .section-heading{margin-bottom:34px}
-  .showcase-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .c-item{width:116px}
   .features-grid{grid-template-columns:1fr;gap:14px}
   .feature-card{padding:20px}
   .social-proof{padding:52px 20px}
@@ -329,11 +337,17 @@ footer small{color:var(--muted);font-size:12px;display:block;line-height:1.6}
       <h2>Dá uma olhada no que vem <span class="hl">no seu kit!</span></h2>
       <p>E lembre-se: isso é só uma amostra de tudo que está esperando por você...</p>
     </div>
-    <div class="showcase-grid">
-      <div class="ph">Imagem</div><div class="ph">Imagem</div><div class="ph">Imagem</div>
-      <div class="ph">Imagem</div><div class="ph">Imagem</div><div class="ph">Imagem</div>
-      <div class="ph">Imagem</div><div class="ph">Imagem</div><div class="ph">Imagem</div>
-      <div class="ph">Imagem</div><div class="ph">Imagem</div><div class="ph">Imagem</div>
+    <div class="carousel" aria-label="Amostra do que vem no kit">
+      <!-- Linha 1 (passa para a esquerda). As imagens entram aqui; o conjunto é duplicado para o loop ser contínuo. -->
+      <div class="carousel-row to-left">
+        <div class="c-item"><div class="ph">01</div></div><div class="c-item"><div class="ph">02</div></div><div class="c-item"><div class="ph">03</div></div><div class="c-item"><div class="ph">04</div></div><div class="c-item"><div class="ph">05</div></div><div class="c-item"><div class="ph">06</div></div><div class="c-item"><div class="ph">07</div></div><div class="c-item"><div class="ph">08</div></div>
+        <div class="c-item" aria-hidden="true"><div class="ph">01</div></div><div class="c-item" aria-hidden="true"><div class="ph">02</div></div><div class="c-item" aria-hidden="true"><div class="ph">03</div></div><div class="c-item" aria-hidden="true"><div class="ph">04</div></div><div class="c-item" aria-hidden="true"><div class="ph">05</div></div><div class="c-item" aria-hidden="true"><div class="ph">06</div></div><div class="c-item" aria-hidden="true"><div class="ph">07</div></div><div class="c-item" aria-hidden="true"><div class="ph">08</div></div>
+      </div>
+      <!-- Linha 2 (passa para a direita). -->
+      <div class="carousel-row to-right">
+        <div class="c-item"><div class="ph">09</div></div><div class="c-item"><div class="ph">10</div></div><div class="c-item"><div class="ph">11</div></div><div class="c-item"><div class="ph">12</div></div><div class="c-item"><div class="ph">13</div></div><div class="c-item"><div class="ph">14</div></div><div class="c-item"><div class="ph">15</div></div><div class="c-item"><div class="ph">16</div></div>
+        <div class="c-item" aria-hidden="true"><div class="ph">09</div></div><div class="c-item" aria-hidden="true"><div class="ph">10</div></div><div class="c-item" aria-hidden="true"><div class="ph">11</div></div><div class="c-item" aria-hidden="true"><div class="ph">12</div></div><div class="c-item" aria-hidden="true"><div class="ph">13</div></div><div class="c-item" aria-hidden="true"><div class="ph">14</div></div><div class="c-item" aria-hidden="true"><div class="ph">15</div></div><div class="c-item" aria-hidden="true"><div class="ph">16</div></div>
+      </div>
     </div>
   </div>
 </section>
