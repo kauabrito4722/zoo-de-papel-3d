@@ -53,186 +53,196 @@ ol,ul{list-style:none;margin:0;padding:0}
 button,a,summary{-webkit-tap-highlight-color:transparent}
 
 /* ============================================================
-   THEME VARIABLES
+   THEME — retro arcade (dark + neon)
    ============================================================ */
 :root{
-  --radius:.625rem;
-  --background:oklch(99% .004 105);
-  --foreground:oklch(30% .035 150);
-  --primary:oklch(85% .16 90);
-  --primary-foreground:oklch(28% .05 150);
-  --secondary:oklch(95% .022 151);
-  --secondary-foreground:oklch(37% .07 150);
-  --muted:oklch(96.5% .012 150);
-  --muted-foreground:oklch(48% .025 150);
-  --accent:oklch(92% .075 90);
-  --accent-foreground:oklch(30% .035 150);
-  --border:oklch(88% .02 150);
-  --ring:oklch(58% .1 150);
-  --hero:oklch(39% .075 151);
-  --hero-foreground:oklch(99% .005 100);
-  --hero-muted:oklch(88% .025 150);
-  --paper-blue:oklch(96% .025 205);
-  --offer-shadow:0 5px 0 oklch(65% .13 80);
-  --photo-shadow:0 12px 28px oklch(20% .05 150/.2);
-  --card:oklch(100% 0 0);
-  --danger:oklch(60% .12 25);
+  --bg:#0b0a1f;
+  --bg-2:#120f2b;
+  --surface:#171333;
+  --surface-2:#1f1a42;
+  --border:#2e2960;
+  --text:#f5f3ff;
+  --muted:#a9a2d6;
+  --primary:#8b5cf6;      /* roxo neon */
+  --primary-2:#ec4899;    /* magenta */
+  --cyan:#22d3ee;
+  --gold:#fbbf24;         /* preço / destaque */
+  --danger:#fb7185;
+  --primary-foreground:#ffffff;
+  --grad:linear-gradient(90deg,#8b5cf6,#ec4899);
+  --grad-hover:linear-gradient(90deg,#7c4ef0,#e0348b);
+  --glow:0 0 32px rgba(139,92,246,.45);
+  --glow-pink:0 0 28px rgba(236,72,153,.4);
+  --card-shadow:0 18px 40px rgba(0,0,0,.45);
 }
 
 /* ============================================================
    BASE
    ============================================================ */
-body{background-color:var(--background);color:var(--foreground)}
+body{background-color:var(--bg);color:var(--text);background-image:radial-gradient(900px 500px at 50% -10%,rgba(139,92,246,.18),transparent 70%)}
+
+/* ============================================================
+   PLACEHOLDER (sem fotos)
+   ============================================================ */
+.ph{background:var(--surface-2);border:2px dashed var(--border);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;text-align:center;padding:16px;min-height:120px}
+.ph svg{opacity:.45}
+.ph.sq{aspect-ratio:1;width:100%}
 
 /* ============================================================
    BUTTON
    ============================================================ */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;white-space:normal;cursor:pointer;transition:background-color .15s;border:none;text-decoration:none}
-.btn:focus-visible{outline:none;box-shadow:0 0 0 1px var(--ring)}
-.btn-primary{background-color:var(--primary);color:var(--primary-foreground);box-shadow:0 1px 3px #0000001a}
-.btn-primary:hover{background-color:oklch(85% .16 90 / .9)}
-.buy-button{white-space:normal;height:auto;min-height:54px;box-shadow:var(--offer-shadow);text-align:center;border-radius:7px;padding:15px 26px;font-size:15px;font-weight:1000;line-height:1.3}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;white-space:normal;cursor:pointer;transition:filter .15s,transform .1s,box-shadow .15s;border:none;text-decoration:none}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 2px var(--cyan)}
+.btn-primary{background-image:var(--grad);color:var(--primary-foreground);box-shadow:var(--glow)}
+.btn-primary:hover{background-image:var(--grad-hover);box-shadow:var(--glow-pink)}
+.btn-primary:active{transform:translateY(1px)}
+.buy-button{white-space:normal;height:auto;min-height:56px;text-align:center;border-radius:999px;padding:16px 28px;font-size:15px;font-weight:1000;line-height:1.3;text-transform:uppercase;letter-spacing:.4px}
 
 /* ============================================================
    ANNOUNCEMENT (= promo banner)
    ============================================================ */
-.announcement{background:var(--primary);color:var(--primary-foreground);text-align:center;justify-content:center;align-items:center;gap:9px;padding:10px 16px;font-size:13px;font-weight:900;display:flex}
+.announcement{background-image:var(--grad);color:#fff;text-align:center;justify-content:center;align-items:center;gap:9px;padding:10px 16px;font-size:13px;font-weight:900;display:flex;text-transform:uppercase;letter-spacing:.4px}
 
 /* ============================================================
    HERO
    ============================================================ */
-.hero{background:var(--hero);color:var(--hero-foreground);text-align:center;padding:24px 24px 22px;overflow:hidden}
-.brand{justify-content:center;align-items:center;gap:9px;font-size:15px;font-weight:1000;display:flex}
-.brand b{color:var(--primary)}
-.hero-copy{max-width:880px;margin:28px auto 0}
-.ratings-badge{background:var(--background);width:auto;height:52px;box-shadow:var(--photo-shadow);border-radius:999px;margin:0 auto 16px;padding:8px 20px;display:block}
-.eyebrow{letter-spacing:1.4px;justify-content:center;align-items:center;gap:7px;font-size:12px;font-weight:1000;display:flex}
-.hero .eyebrow{color:var(--primary)}
-h1{margin:12px 0 15px;font-size:48px;font-weight:1000;line-height:1.13}
-h1 span{color:var(--primary)}
-.hero-description{color:var(--hero-muted);font-size:17px;font-weight:600;line-height:1.6}
-.hero-gallery{justify-content:center;align-items:center;gap:18px;max-width:760px;width:100%;margin:27px auto 24px;display:flex}
-.hero-gallery img{object-fit:contain;aspect-ratio:1;border:4px solid var(--hero-foreground);width:100%;box-shadow:var(--photo-shadow);border-radius:8px;display:block;flex-shrink:1}
+.hero{background:var(--bg);color:var(--text);text-align:center;padding:24px 24px 30px;overflow:hidden}
+.brand{justify-content:center;align-items:center;gap:9px;font-size:16px;font-weight:1000;display:flex;text-transform:uppercase;letter-spacing:1px}
+.brand svg{color:var(--primary)}
+.brand b{color:var(--gold)}
+.hero-copy{max-width:880px;margin:30px auto 0}
+.ratings-badge{background:var(--surface);border:1px solid var(--border);width:max-content;max-width:100%;box-shadow:var(--card-shadow);border-radius:999px;margin:0 auto 18px;padding:9px 20px;display:flex;align-items:center;gap:9px;font-size:13px;font-weight:800}
+.ratings-badge .stars{color:var(--gold);letter-spacing:2px;font-size:15px}
+.eyebrow{letter-spacing:2px;justify-content:center;align-items:center;gap:7px;font-size:12px;font-weight:1000;display:flex;text-transform:uppercase}
+.hero .eyebrow{color:var(--cyan)}
+h1{margin:14px 0 15px;font-size:50px;font-weight:1000;line-height:1.1;letter-spacing:-.5px}
+h1 span{color:transparent;background-image:var(--grad);-webkit-background-clip:text;background-clip:text}
+.hero-description{color:var(--muted);font-size:17px;font-weight:600;line-height:1.6}
+.hero-gallery{justify-content:center;align-items:center;gap:18px;max-width:760px;width:100%;margin:30px auto 26px;display:flex}
+.hero-gallery .ph{width:100%;flex-shrink:1;box-shadow:var(--card-shadow)}
 .hero-side{width:26%;max-width:180px}
 .hero-main{z-index:1;width:38%;max-width:260px;position:relative}
 .hero-left{transform:rotate(-5deg)}
 .hero-right{transform:rotate(5deg)}
-.hero-action>p{color:var(--hero-muted);flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;margin:14px 0 0;font-size:11px;display:flex}
-.discover{color:var(--hero-foreground);align-items:center;gap:7px;margin-top:23px;font-size:12px;text-decoration:none;display:inline-flex}
+.hero-action>p{color:var(--muted);flex-wrap:wrap;justify-content:center;align-items:center;gap:7px;margin:16px 0 0;font-size:11px;display:flex}
+.discover{color:var(--muted);align-items:center;gap:7px;margin-top:24px;font-size:12px;text-decoration:none;display:inline-flex;text-transform:uppercase;letter-spacing:1px;font-weight:800}
 
 /* ============================================================
    BENEFIT BAND
    ============================================================ */
-.benefit-band{background:var(--secondary);flex-wrap:wrap;justify-content:center;gap:40px;padding:24px;display:flex}
+.benefit-band{background:var(--bg-2);border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-wrap:wrap;justify-content:center;gap:40px;padding:24px;display:flex}
 .benefit-band span{align-items:center;gap:9px;font-size:13px;font-weight:800;display:flex}
+.benefit-band svg{color:var(--cyan)}
 
 /* ============================================================
    SECTION
    ============================================================ */
-.section{max-width:1080px;margin:auto;padding:72px 28px}
-.section-heading{text-align:center;max-width:680px;margin:0 auto 36px}
-.section-heading .eyebrow{color:var(--secondary-foreground)}
-h2{margin:12px 0 16px;font-size:34px;font-weight:1000;line-height:1.2}
-h2 span{color:var(--secondary-foreground)}
-.section-heading>p:last-child{color:var(--muted-foreground);font-size:16px;line-height:1.7}
+.section{max-width:1080px;margin:auto;padding:76px 28px}
+.section-heading{text-align:center;max-width:680px;margin:0 auto 40px}
+.section-heading .eyebrow{color:var(--cyan)}
+h2{margin:12px 0 16px;font-size:36px;font-weight:1000;line-height:1.18;letter-spacing:-.5px}
+h2 span{color:transparent;background-image:var(--grad);-webkit-background-clip:text;background-clip:text}
+.section-heading>p:last-child{color:var(--muted);font-size:16px;line-height:1.7}
 
 /* ============================================================
    COLLECTION (= showcase grid)
    ============================================================ */
 .collection-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;display:grid}
-.collection-item{border:1px solid var(--border);background:var(--card);border-radius:8px;overflow:hidden}
-.collection-item img{aspect-ratio:1;object-fit:contain;width:100%;display:block}
+.collection-item{border:1px solid var(--border);background:var(--surface);border-radius:12px;overflow:hidden;transition:transform .15s,box-shadow .15s}
+.collection-item:hover{transform:translateY(-4px);box-shadow:var(--glow)}
+.collection-item .ph{border:0;border-bottom:2px dashed var(--border);border-radius:0}
 .collection-item>div{padding:18px}
 .collection-item h3{margin-bottom:7px;font-size:17px;font-weight:900}
-.collection-item p{color:var(--muted-foreground);font-size:13px;line-height:1.65}
+.collection-item p{color:var(--muted);font-size:13px;line-height:1.65}
 .animal-examples{text-align:center;margin-top:36px}
 .animal-examples h3{margin-bottom:18px;font-size:20px;font-weight:900}
-.animal-examples img{border-radius:8px;width:100%;max-width:800px;margin:auto}
-.category-list{border-top:1px solid var(--border);margin-top:36px;padding-top:30px}
+.animal-examples .ph{max-width:800px;min-height:260px;margin:auto}
+.category-list{border-top:1px solid var(--border);margin-top:36px;padding-top:32px}
 .category-heading{justify-content:center;align-items:center;gap:12px;display:flex}
-.category-heading>svg{color:var(--secondary-foreground)}
+.category-heading>svg{color:var(--cyan)}
 .category-heading h3{font-size:20px;font-weight:900}
-.category-heading p{color:var(--muted-foreground);margin-top:3px;font-size:14px}
+.category-heading p{color:var(--muted);margin-top:3px;font-size:14px}
 .category-list ul{flex-wrap:wrap;justify-content:center;gap:12px 22px;max-width:870px;margin:24px auto 0;display:flex}
 .category-list li{align-items:center;gap:6px;font-size:14px;font-weight:700;display:flex}
-.category-list li svg{color:var(--secondary-foreground)}
+.category-list li svg{color:var(--primary-2)}
 
 /* ============================================================
    FEATURES (= value proposition cards)
    ============================================================ */
-.features-section{background:var(--muted)}
+.features-section{background:var(--bg-2)}
 .features-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;display:grid}
-.feature-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:28px 22px;text-align:center}
-.feature-icon{background:var(--secondary);color:var(--secondary-foreground);width:58px;height:58px;border-radius:999px;margin:0 auto 16px;align-items:center;justify-content:center;display:flex}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:30px 22px;text-align:center}
+.feature-icon{background-image:var(--grad);color:#fff;width:60px;height:60px;border-radius:999px;margin:0 auto 18px;align-items:center;justify-content:center;display:flex;box-shadow:var(--glow)}
 .feature-card h3{margin-bottom:8px;font-size:17px;font-weight:900}
-.feature-card p{color:var(--muted-foreground);font-size:13px;line-height:1.65}
+.feature-card p{color:var(--muted);font-size:13px;line-height:1.65}
 
 /* ============================================================
    SOCIAL PROOF + mid CTA
    ============================================================ */
-.social-proof{background:var(--hero);color:var(--hero-foreground);text-align:center;padding:64px 28px}
-.social-proof .count{color:var(--primary);font-size:46px;font-weight:1000;line-height:1.1}
-.social-proof h2{color:var(--hero-foreground);max-width:640px;margin:14px auto 10px}
-.social-proof p{color:var(--hero-muted);max-width:560px;margin:0 auto 26px;font-size:16px;line-height:1.7}
+.social-proof{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);text-align:center;padding:68px 28px}
+.social-proof .count{color:transparent;background-image:var(--grad);-webkit-background-clip:text;background-clip:text;font-size:48px;font-weight:1000;line-height:1.1}
+.social-proof h2{max-width:640px;margin:14px auto 10px}
+.social-proof p{color:var(--muted);max-width:560px;margin:0 auto 28px;font-size:16px;line-height:1.7}
 
 /* ============================================================
    CONTENTS ("O que você recebe")
    ============================================================ */
 .offer-section{grid-template-columns:1fr 1fr;align-items:center;gap:64px;display:grid}
 .offer-images{grid-template-columns:1fr 1fr;gap:12px;display:grid}
-.offer-images img{aspect-ratio:1;object-fit:contain;border-radius:8px;width:100%;display:block}
-.offer-images img:first-child{grid-column:span 2}
-.offer-content .eyebrow{color:var(--secondary-foreground);justify-content:flex-start}
-.item-label{letter-spacing:1.4px;color:var(--secondary-foreground);font-size:12px;font-weight:1000;margin-bottom:6px}
+.offer-images .ph{aspect-ratio:1;width:100%}
+.offer-images .ph:first-child{grid-column:span 2;aspect-ratio:2/1}
+.offer-content .eyebrow{justify-content:flex-start}
+.item-label{letter-spacing:2px;color:var(--gold);font-size:12px;font-weight:1000;margin-bottom:8px;text-transform:uppercase}
 .offer-content h2{font-size:32px}
 .offer-list{margin:24px 0;padding:0}
-.offer-list li{align-items:flex-start;gap:9px;margin:11px 0;font-size:14px;display:flex}
-.offer-list svg{color:var(--secondary-foreground);flex-shrink:0}
+.offer-list li{align-items:flex-start;gap:9px;margin:12px 0;font-size:14px;display:flex}
+.offer-list svg{color:var(--cyan);flex-shrink:0}
 
 /* ============================================================
    BONUS (= bonuses grid)
    ============================================================ */
-.bonus-section{background:var(--paper-blue)}
+.bonus-section{background:var(--bg-2)}
 .bonus-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;display:grid}
-.bonus-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;display:flex;align-items:center;gap:18px;padding:18px}
-.bonus-card img{width:96px;height:96px;object-fit:contain;border-radius:8px;flex-shrink:0}
-.bonus-label{letter-spacing:1px;color:var(--secondary-foreground);font-size:11px;font-weight:1000;margin-bottom:4px}
+.bonus-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;align-items:center;gap:18px;padding:18px}
+.bonus-card .ph{width:96px;height:96px;min-height:0;flex-shrink:0}
+.bonus-label{letter-spacing:1.4px;color:var(--primary-2);font-size:11px;font-weight:1000;margin-bottom:4px;text-transform:uppercase}
 .bonus-card h3{font-size:16px;font-weight:900;margin-bottom:5px}
-.bonus-card p{color:var(--muted-foreground);font-size:13px;line-height:1.6}
+.bonus-card p{color:var(--muted);font-size:13px;line-height:1.6}
 
 /* ============================================================
    PRICING (= two-tier pricing)
    ============================================================ */
 .pricing-grid{grid-template-columns:1fr 1fr;align-items:start;gap:24px;max-width:860px;margin:0 auto;display:grid}
-.price-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:30px 26px;display:flex;flex-direction:column}
-.price-card.featured{border:2px solid var(--primary);box-shadow:var(--photo-shadow);position:relative}
-.price-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--primary);color:var(--primary-foreground);letter-spacing:.6px;font-size:11px;font-weight:1000;padding:6px 16px;border-radius:999px;white-space:nowrap}
-.price-rating{align-items:center;gap:7px;color:var(--muted-foreground);font-size:13px;font-weight:700;display:flex;margin-bottom:10px}
-.price-rating .stars{color:var(--primary);letter-spacing:1px}
-.price-card h3{font-size:20px;font-weight:1000;margin-bottom:14px}
-.old-price{color:var(--muted-foreground);font-size:14px}
-.price{color:var(--secondary-foreground);font-size:56px;font-weight:1000;line-height:1.1}
+.price-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 26px;display:flex;flex-direction:column}
+.price-card.featured{border:2px solid var(--primary);box-shadow:var(--glow);position:relative}
+.price-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background-image:var(--grad);color:#fff;letter-spacing:.6px;font-size:11px;font-weight:1000;padding:7px 16px;border-radius:999px;white-space:nowrap;text-transform:uppercase;box-shadow:var(--glow-pink)}
+.price-rating{align-items:center;gap:7px;color:var(--muted);font-size:13px;font-weight:700;display:flex;margin-bottom:12px}
+.price-rating .stars{color:var(--gold);letter-spacing:1px}
+.price-card h3{font-size:21px;font-weight:1000;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.old-price{color:var(--muted);font-size:14px}
+.price{color:var(--gold);font-size:58px;font-weight:1000;line-height:1.1}
 .price span{font-size:30px}
-.price-note{color:var(--muted-foreground);margin:4px 0 18px;font-size:13px}
-.price-save{color:var(--secondary-foreground);background:var(--secondary);font-size:12px;font-weight:900;border-radius:7px;padding:7px 12px;margin:0 0 18px;display:inline-block}
+.price-note{color:var(--muted);margin:4px 0 18px;font-size:13px}
+.price-save{color:#0b0a1f;background:var(--gold);font-size:12px;font-weight:1000;border-radius:999px;padding:7px 14px;margin:0 0 18px;display:inline-block;text-transform:uppercase;letter-spacing:.5px}
 .plan-list{margin:0 0 24px;padding:0;flex:1}
-.plan-list li{align-items:flex-start;gap:9px;margin:10px 0;font-size:14px;display:flex}
+.plan-list li{align-items:flex-start;gap:9px;margin:11px 0;font-size:14px;display:flex}
 .plan-list svg{flex-shrink:0;margin-top:1px}
-.plan-list .yes svg{color:var(--secondary-foreground)}
-.plan-list .no{color:var(--muted-foreground)}
+.plan-list .yes svg{color:var(--cyan)}
+.plan-list .no{color:var(--muted);opacity:.7}
 .plan-list .no svg{color:var(--danger)}
 .price-card .buy-button{width:100%;display:flex}
-.price-urgency{color:var(--danger);text-align:center;font-size:12px;font-weight:900;margin-top:12px}
-.pricing-heads-up{background:var(--accent);color:var(--accent-foreground);text-align:center;max-width:700px;margin:28px auto 0;padding:16px 22px;border-radius:8px;font-size:14px;font-weight:700;line-height:1.6}
-.payment-note{color:var(--muted-foreground);justify-content:center;gap:6px;margin:24px 0 0;font-size:11px;display:flex}
+.price-urgency{color:var(--danger);text-align:center;font-size:12px;font-weight:900;margin-top:12px;text-transform:uppercase;letter-spacing:.5px}
+.pricing-heads-up{background:var(--surface-2);border:1px solid var(--border);color:var(--text);text-align:center;max-width:700px;margin:30px auto 0;padding:16px 22px;border-radius:10px;font-size:14px;font-weight:700;line-height:1.6}
+.pricing-heads-up b{color:var(--gold)}
+.payment-note{color:var(--muted);justify-content:center;gap:6px;margin:24px 0 0;font-size:11px;display:flex}
 
 /* ============================================================
    GUARANTEE
    ============================================================ */
-.guarantee-band{background:var(--secondary);justify-content:center;align-items:center;gap:22px;padding:35px 28px;display:flex}
-.guarantee-band>svg{color:var(--secondary-foreground);flex-shrink:0}
-.guarantee-band h2{margin:0 0 7px;font-size:23px}
-.guarantee-band p{color:var(--muted-foreground);font-size:14px}
+.guarantee-band{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);justify-content:center;align-items:center;gap:22px;padding:40px 28px;display:flex}
+.guarantee-band>svg{color:var(--cyan);flex-shrink:0;filter:drop-shadow(0 0 10px rgba(34,211,238,.5))}
+.guarantee-band h2{margin:0 0 7px;font-size:24px}
+.guarantee-band p{color:var(--muted);font-size:14px}
 
 /* ============================================================
    FAQ
@@ -241,39 +251,39 @@ h2 span{color:var(--secondary-foreground)}
 .faq-list details{border-bottom:1px solid var(--border)}
 .faq-list summary{cursor:pointer;justify-content:space-between;align-items:center;gap:16px;padding:20px 0;font-size:16px;font-weight:800;list-style:none;display:flex}
 .faq-list summary::-webkit-details-marker{display:none}
-.faq-list summary span{color:var(--secondary-foreground);font-size:24px;line-height:1;transition:transform .2s}
+.faq-list summary span{color:var(--primary-2);font-size:26px;line-height:1;transition:transform .2s}
 .faq-list details[open] summary span{transform:rotate(45deg)}
-.faq-list details p{color:var(--muted-foreground);padding:0 30px 20px 0;font-size:14px;line-height:1.7}
+.faq-list details p{color:var(--muted);padding:0 30px 20px 0;font-size:14px;line-height:1.7}
 
 /* ============================================================
    CLOSING CTA
    ============================================================ */
-.closing-cta{background:var(--hero);color:var(--hero-foreground);text-align:center;padding:72px 28px}
-.closing-cta h2{color:var(--hero-foreground);max-width:620px;margin:0 auto 14px}
-.closing-cta p{color:var(--hero-muted);max-width:520px;margin:0 auto 28px;font-size:16px;line-height:1.7}
+.closing-cta{background:var(--bg-2);text-align:center;padding:76px 28px;background-image:radial-gradient(700px 300px at 50% 120%,rgba(236,72,153,.2),transparent 70%)}
+.closing-cta h2{max-width:620px;margin:0 auto 14px}
+.closing-cta p{color:var(--muted);max-width:520px;margin:0 auto 30px;font-size:16px;line-height:1.7}
 
 /* ============================================================
    FOOTER
    ============================================================ */
-footer{background:var(--hero);color:var(--hero-foreground);text-align:center;padding:36px 24px;border-top:1px solid oklch(45% .06 151)}
-footer p{color:var(--hero-muted);margin:12px 0 18px;font-size:14px}
-footer small{color:var(--hero-muted);justify-content:center;align-items:center;gap:6px;font-size:11px;display:flex}
+footer{background:var(--bg);color:var(--text);text-align:center;padding:40px 24px;border-top:1px solid var(--border)}
+footer p{color:var(--muted);margin:12px 0 18px;font-size:14px}
+footer small{color:var(--muted);justify-content:center;align-items:center;gap:6px;font-size:11px;display:flex}
 
 /* ============================================================
    EXIT-INTENT MODAL
    ============================================================ */
-.exit-overlay{position:fixed;inset:0;background:oklch(20% .05 150/.6);z-index:50;align-items:center;justify-content:center;padding:20px;display:none}
+.exit-overlay{position:fixed;inset:0;background:rgba(5,4,15,.75);backdrop-filter:blur(3px);z-index:50;align-items:center;justify-content:center;padding:20px;display:none}
 .exit-overlay.open{display:flex}
-.exit-modal{background:var(--card);max-width:420px;width:100%;border-radius:14px;padding:34px 28px;text-align:center;position:relative;box-shadow:var(--photo-shadow)}
-.exit-close{position:absolute;top:12px;right:14px;background:none;cursor:pointer;color:var(--muted-foreground);font-size:26px;line-height:1}
-.exit-modal .eyebrow{color:var(--secondary-foreground);justify-content:center;margin-bottom:8px}
-.exit-modal h2{font-size:26px;margin:0 0 10px}
-.exit-modal p{color:var(--muted-foreground);font-size:14px;line-height:1.6;margin-bottom:16px}
-.exit-price{color:var(--secondary-foreground);font-size:40px;font-weight:1000;margin-bottom:4px}
-.exit-price s{color:var(--muted-foreground);font-size:20px;font-weight:700}
+.exit-modal{background:var(--surface);border:1px solid var(--border);max-width:420px;width:100%;border-radius:16px;padding:36px 28px;text-align:center;position:relative;box-shadow:var(--glow)}
+.exit-close{position:absolute;top:12px;right:14px;background:none;cursor:pointer;color:var(--muted);font-size:26px;line-height:1}
+.exit-modal .eyebrow{color:var(--primary-2);justify-content:center;margin-bottom:8px}
+.exit-modal h2{font-size:27px;margin:0 0 10px}
+.exit-modal p{color:var(--muted);font-size:14px;line-height:1.6;margin-bottom:16px}
+.exit-price{color:var(--gold);font-size:42px;font-weight:1000;margin-bottom:4px}
+.exit-price s{color:var(--muted);font-size:20px;font-weight:700}
 .exit-timer{color:var(--danger);font-size:13px;font-weight:900;margin-bottom:18px}
 .exit-modal .buy-button{width:100%;display:flex;margin-bottom:12px}
-.exit-no{background:none;cursor:pointer;color:var(--muted-foreground);font-size:13px;text-decoration:underline}
+.exit-no{background:none;cursor:pointer;color:var(--muted);font-size:13px;text-decoration:underline}
 
 /* ============================================================
    RESPONSIVE
@@ -286,52 +296,51 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
 }
 @media (max-width:600px){
   .announcement{padding:9px 12px;font-size:11px}
-  .hero{padding:20px 18px 24px}
-  .brand{font-size:13px}
-  .hero-copy{margin-top:25px}
-  .eyebrow{letter-spacing:1px;font-size:10px}
-  h1{margin-top:12px;font-size:32px}
+  .hero{padding:20px 18px 28px}
+  .brand{font-size:14px}
+  .hero-copy{margin-top:26px}
+  .eyebrow{letter-spacing:1.4px;font-size:10px}
+  h1{margin-top:12px;font-size:34px}
   .desktop-break{display:none}
   .hero-description{font-size:14px;line-height:1.55}
   .hero-gallery{gap:8px;margin:24px auto;max-width:360px}
   .hero-main{width:42%;max-width:none}
   .hero-side{width:28%;max-width:none}
-  .hero-gallery img{border-width:2px}
-  .buy-button{width:100%;padding:15px 20px;font-size:13px}
+  .buy-button{width:100%;padding:16px 20px;font-size:13px}
   .hero-action>p{gap:5px;font-size:10px}
   .benefit-band{grid-template-columns:1fr 1fr;gap:16px 12px;padding:22px 20px;display:grid}
   .benefit-band span{gap:7px;font-size:11px}
-  .section{padding:48px 20px}
+  .section{padding:52px 20px}
   h2{font-size:28px}
   .section-heading>p:last-child{font-size:14px}
   .collection-grid,.features-grid{gap:12px}
   .collection-item>div{padding:13px}
   .collection-item h3{font-size:15px}
   .collection-item p{font-size:12px}
-  .feature-card{padding:22px 16px}
+  .feature-card{padding:24px 16px}
   .category-heading{align-items:flex-start}
   .category-heading h3{font-size:18px}
   .category-heading p{font-size:12px}
   .category-list ul{justify-content:flex-start;gap:12px 16px}
   .category-list li{font-size:12px}
-  .social-proof{padding:48px 22px}
-  .social-proof .count{font-size:36px}
+  .social-proof{padding:52px 22px}
+  .social-proof .count{font-size:38px}
   .offer-section{grid-template-columns:1fr;gap:24px}
   .offer-images{max-width:420px;margin:auto}
   .offer-content h2{font-size:28px}
   .offer-content{padding-top:8px}
   .bonus-grid{grid-template-columns:1fr}
-  .bonus-card img{width:72px;height:72px}
+  .bonus-card .ph{width:72px;height:72px}
   .pricing-grid{grid-template-columns:1fr;gap:34px}
   .price{font-size:48px}
-  .guarantee-band{gap:14px;padding:30px 20px}
-  .guarantee-band>svg{width:38px}
+  .guarantee-band{gap:14px;padding:32px 20px}
+  .guarantee-band>svg{width:40px}
   .guarantee-band p{font-size:12px;line-height:1.6}
-  .guarantee-band h2{font-size:20px}
+  .guarantee-band h2{font-size:21px}
   .faq-list summary{font-size:14px}
   .closing-cta{padding:56px 22px}
   .exit-modal{padding:28px 22px}
-  .exit-modal h2{font-size:22px}
+  .exit-modal h2{font-size:23px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
 </style>
@@ -353,19 +362,19 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
   </header>
 
   <div class="hero-copy">
-    <img class="ratings-badge" src="https://zoodepapel.lovable.app/__l5e/assets-v1/d67bb4dc-3f82-4a9e-ba5d-df32d4d6c323/avaliacoes-badge.png" alt="+2231 avaliações com 5 estrelas" width="274" height="54" onerror="this.style.display='none'">
+    <div class="ratings-badge"><span class="stars">★★★★★</span> +2.231 avaliações</div>
     <p class="eyebrow">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
       PAPEL, PERSONAGENS E MUITA DIVERSÃO
     </p>
-    <h1>150 animais <span>+ bônus em<br class="desktop-break"> brinquedos de papel 3D!</span></h1>
+    <h1>150 animais <span>+ bônus em brinquedos de papel 3D!</span></h1>
     <p class="hero-description">Animais, carros, heróis, princesas e personagens favoritos.<br class="desktop-break"> Imprima, recorte e transforme papel em brincadeira de verdade.</p>
   </div>
 
   <div class="hero-gallery">
-    <img class="hero-side hero-left" src="img/trio-1-ninja.png" alt="Ninja de papel 3D montado">
-    <img class="hero-main" src="img/trio-2-games.png" alt="Brinquedos de papel de games e desenhos" fetchpriority="high">
-    <img class="hero-side hero-right" src="img/trio-3-herois.png" alt="Heróis e princesas de papel 3D">
+    <div class="ph sq hero-side hero-left">Imagem</div>
+    <div class="ph sq hero-main">Imagem principal</div>
+    <div class="ph sq hero-side hero-right">Imagem</div>
   </div>
 
   <div class="hero-action">
@@ -415,28 +424,28 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
 
   <div class="collection-grid">
     <article class="collection-item">
-      <img src="img/trio-2-games.png" alt="Games e desenhos" loading="lazy">
+      <div class="ph sq">Imagem</div>
       <div>
         <h3>Games e desenhos</h3>
-        <p>Minecraft, Pokémon, Peppa Pig e outros personagens para ganhar vida fora das telas.</p>
+        <p>Personagens favoritos para ganhar vida fora das telas.</p>
       </div>
     </article>
     <article class="collection-item">
-      <img src="img/trio-3-herois.png" alt="Heróis e princesas" loading="lazy">
+      <div class="ph sq">Imagem</div>
       <div>
         <h3>Heróis e princesas</h3>
         <p>Personagens para inventar aventuras, histórias e um universo de brincadeiras.</p>
       </div>
     </article>
     <article class="collection-item">
-      <img src="img/trio-1-ninja.png" alt="Personagens para montar" loading="lazy">
+      <div class="ph sq">Imagem</div>
       <div>
         <h3>Personagens para montar</h3>
         <p>Do molde ao brinquedo: recorte, dobre e descubra a diversão de criar com as mãos.</p>
       </div>
     </article>
     <article class="collection-item">
-      <img src="https://zoodepapel.lovable.app/assets/panda_raposa_sem_texto-CN1PO2B_.png" alt="Panda e raposa de papel 3D" loading="lazy" onerror="this.src='img/trio-1-ninja.png'">
+      <div class="ph sq">Imagem</div>
       <div>
         <h3>150 animais de papel 3D</h3>
         <p>Pandas, raposas e uma coleção de animais para montar seu próprio zoológico.</p>
@@ -446,7 +455,7 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
 
   <div class="animal-examples">
     <h3>Os animais também fazem parte da diversão</h3>
-    <img src="https://zoodepapel.lovable.app/__l5e/assets-v1/a727b0e7-59b3-4450-8a77-c3a64d1a6d8d/animais_montados.png" alt="Coleção de animais montados em papel" loading="lazy" onerror="this.style.display='none'">
+    <div class="ph">Imagem dos animais montados</div>
   </div>
 
   <div class="category-list">
@@ -463,14 +472,13 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
       <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Diversos personagens</li>
       <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Games</li>
       <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Heróis</li>
-      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Minecraft</li>
-      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Peppa Pig</li>
-      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Pokémon</li>
-      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Power Rangers</li>
       <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Princesas</li>
-      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Rainbow Friends</li>
-      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Roblox</li>
-      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Sítio do Pica Pau Amarelo</li>
+      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Veículos</li>
+      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Dinossauros</li>
+      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Fazendinha</li>
+      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Fundo do mar</li>
+      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Festa</li>
+      <li><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Datas comemorativas</li>
     </ul>
   </div>
 </section>
@@ -521,9 +529,9 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
 <!-- CONTENTS ("O que você recebe") -->
 <section class="section offer-section" id="kit">
   <div class="offer-images">
-    <img src="https://zoodepapel.lovable.app/assets/panda_mesa_sem_texto-DJtUS2xo.png" alt="Panda de papel na mesa" loading="lazy" onerror="this.src='img/trio-1-ninja.png'">
-    <img src="https://zoodepapel.lovable.app/assets/panda_molde_sem_texto-BCYDT4kW.png" alt="Molde do panda de papel" loading="lazy" onerror="this.src='img/trio-2-games.png'">
-    <img src="https://zoodepapel.lovable.app/assets/raposa_oficina_sem_texto-CI-o7-s0.png" alt="Raposa de papel na oficina" loading="lazy" onerror="this.src='img/trio-3-herois.png'">
+    <div class="ph">Imagem</div>
+    <div class="ph">Imagem</div>
+    <div class="ph">Imagem</div>
   </div>
   <div class="offer-content">
     <p class="item-label">ITEM 01</p>
@@ -552,7 +560,7 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
     </div>
     <div class="bonus-grid">
       <div class="bonus-card">
-        <img src="img/bonus-1.webp" alt="Bônus de carros de papel" loading="lazy">
+        <div class="ph">Img</div>
         <div>
           <p class="bonus-label">BÔNUS #1</p>
           <h3>Carros e veículos</h3>
@@ -560,7 +568,7 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
         </div>
       </div>
       <div class="bonus-card">
-        <img src="img/bonus-2.webp" alt="Bônus de personagens de games" loading="lazy">
+        <div class="ph">Img</div>
         <div>
           <p class="bonus-label">BÔNUS #2</p>
           <h3>Games e desenhos</h3>
@@ -568,7 +576,7 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
         </div>
       </div>
       <div class="bonus-card">
-        <img src="img/bonus-3-ficha.webp" alt="Bônus de heróis e princesas" loading="lazy">
+        <div class="ph">Img</div>
         <div>
           <p class="bonus-label">BÔNUS #3</p>
           <h3>Heróis e princesas</h3>
@@ -576,7 +584,7 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
         </div>
       </div>
       <div class="bonus-card">
-        <img src="img/molde-recorte.webp" alt="Bônus de fichas e moldes extras" loading="lazy">
+        <div class="ph">Img</div>
         <div>
           <p class="bonus-label">BÔNUS #4</p>
           <h3>Fichas e moldes extras</h3>
@@ -686,7 +694,7 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
 
 <!-- CLOSING CTA -->
 <section class="closing-cta">
-  <p class="eyebrow" style="color:var(--primary);justify-content:center;margin-bottom:10px">ÚLTIMA CHAMADA</p>
+  <p class="eyebrow" style="color:var(--primary-2);justify-content:center;margin-bottom:10px">ÚLTIMA CHAMADA</p>
   <h2>Transforme papel em uma tarde<br>inteira de diversão.</h2>
   <p>Imprima, recorte e monte com as suas crianças. Um mundo de papel esperando para ganhar vida.</p>
   <a href="#pricing" class="btn btn-primary buy-button">
@@ -734,9 +742,7 @@ footer small{color:var(--hero-muted);justify-content:center;align-items:center;g
   document.getElementById('exitClose').addEventListener('click',close);
   document.getElementById('exitNo').addEventListener('click',close);
   modal.addEventListener('click',function(e){if(e.target===modal)close()});
-  // desktop: mouse leaves toward the top (exit intent)
   document.addEventListener('mouseout',function(e){if(e.clientY<=0&&!e.relatedTarget)open()});
-  // mobile fallback: show after a delay
   setTimeout(open,45000);
 })();
 </script>
